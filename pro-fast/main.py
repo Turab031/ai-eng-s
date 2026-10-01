@@ -1,6 +1,12 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
+
+class Custom(BaseModel):
+    name:str
+    age:int
+
 
 
 @app.get("/ping")
@@ -18,8 +24,9 @@ async def root():
 async def read_blog():
     return {"message":"no comments yet"}
 
-@app.get("/blog/{blog_id}")
-async def get_blog(blog_id:int,q:str=None,name:str=''):
+@app.post("/blog/{blog_id}")
+async def get_blog(blog_id:int,request_body:Custom,  q:str=None,name:str=''):
+    print(request_body)
     print(q,name)
     return {"blog_id":blog_id}
 
